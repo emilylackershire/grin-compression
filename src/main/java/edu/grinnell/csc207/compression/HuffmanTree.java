@@ -1,6 +1,7 @@
 package edu.grinnell.csc207.compression;
 
 import java.util.Map;
+import java.util.PriorityQueue;
 
 /**
  * A HuffmanTree derives a space-efficient coding of a collection of byte
@@ -15,30 +16,46 @@ import java.util.Map;
  * our byte values.
  */
 public class HuffmanTree {
+    private static Node root;       
+           
+        public HuffmanTree (Map<Short, Integer> freqs) {
 
-    /**
-     * Constructs a new HuffmanTree from a frequency map.
-     * @param freqs a map from 9-bit values to frequencies.
-     */
-    public HuffmanTree (Map<Short, Integer> freqs) {
-        // TODO: fill me in!
-    }
-
-    /**
-     * Constructs a new HuffmanTree from the given file.
-     * @param in the input file (as a BitInputStream)
-     */
-    public HuffmanTree (BitInputStream in) {
-        // TODO: fill me in!
-    }
+                PriorityQueue<Node> queue = new PriorityQueue<>();
+                for (Map.Entry<Short, Integer> entry : freqs.entrySet()) {
+                   queue.add(new Node(entry.getKey(), entry.getValue()));
+             }
+                while (queue.size() > 1) {
+                    Node left = queue.poll();
+                    Node right = queue.poll();
+                    Node parent = new Node(left, right);
+                    queue.add(parent);
+                }
+                Node root = queue.poll();
+            }
 
     /**
      * Writes this HuffmanTree to the given file as a stream of bits in a
      * serialized format.
      * @param out the output file as a BitOutputStream
      */
-    public void serialize (BitOutputStream out) {
-        // TODO: fill me in!
+    public static void serializeHelper (Node node, BitOutputStream out) {
+        if(node.isLeaf()) {
+            out.writeBit(0);
+            out.writeBits(node.value, 9); 
+        } else {
+            out.writeBit(1); 
+            serializeHelper(node.left, out);
+            serializeHelper(node.right, out); 
+        }
+    }
+    
+    /**
+     * Writes this HuffmanTree to the given file as a stream of bits in a
+     * serialized format.
+     * @param out the output file as a BitOutputStream
+     */
+    public static void serialize (BitOutputStream out) {
+        serializeHelper(root, out); 
     }
    
     /**
@@ -49,7 +66,7 @@ public class HuffmanTree {
      * @param out the file to write the compressed output to.
      */
     public void encode (BitInputStream in, BitOutputStream out) {
-        // TODO: fill me in!
+        
     }
 
     /**

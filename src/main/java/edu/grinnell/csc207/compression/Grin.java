@@ -13,7 +13,7 @@ public class Grin {
      * @param outfile the file to ouptut to
      */
     public static void decode (String infile, String outfile) {
-        // TODO: fill me in!
+        
     }
 
     /**
@@ -24,8 +24,7 @@ public class Grin {
      * @return a freqency map for the given file
      */
     public static Map<Short, Integer> createFrequencyMap (String file) {
-        // TODO: fill me in!
-        return null;
+        
     }
 
     /**
