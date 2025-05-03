@@ -18,11 +18,17 @@ import java.util.PriorityQueue;
 public class HuffmanTree {
     private static Node root;
 
+    /**
+     * gets the root
+     * 
+     * @return root
+     */
     public static Node getRoot() {
         return root;
     }
 
     /**
+     * builds huffman tree
      * 
      * @param freqs
      */
@@ -62,9 +68,10 @@ public class HuffmanTree {
     }
 
     /**
+     * decode helper
      * 
      * @param in   the bitstream file to decode
-     * @param root the root of the tree
+     * @param current the root of the tree, then updated 
      * @return
      */
     public void decodeHelper(BitInputStream in, Node current) {
@@ -84,6 +91,7 @@ public class HuffmanTree {
      * Writes this HuffmanTree to the given file as a stream of bits in a
      * serialized format.
      * 
+     * @param node the root of the tree to serialize
      * @param out the output file as a BitOutputStream
      */
     public static void serializeHelper(Node node, BitOutputStream out) {

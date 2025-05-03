@@ -15,12 +15,13 @@ public class Grin {
      * @param outfile the file to ouptut to
      * @throws IOException 
      */
-    public static void decode (String infile, String outfile) throws IOException {
+    public static void decode(String infile, String outfile) throws IOException {
         BitInputStream in = new BitInputStream(infile);
         BitOutputStream out = new BitOutputStream(outfile);
         int value = in.readBits(32);
         if (value != 0x736) {
-            throw new IllegalArgumentException("File is not a .grin file!!! Your value was: " + value);
+            throw new IllegalArgumentException
+                ("File is not a .grin file!!! Your value was: " + value);
         }
         HuffmanTree huffman = new HuffmanTree(in);
         huffman.decode(in, out);
@@ -34,7 +35,7 @@ public class Grin {
      * @return a freqency map for the given file
      * @throws IOException 
      */
-    public static Map<Short, Integer> createFrequencyMap (String file) throws IOException {
+    public static Map<Short, Integer> createFrequencyMap(String file) throws IOException {
         BitInputStream in = new BitInputStream(file);
         Map<Short, Integer> freqMap = new java.util.HashMap<>();
         boolean map = true;
@@ -69,9 +70,9 @@ public class Grin {
      */
     public static void main(String[] args) throws IOException {
         System.out.println("Usage: java Grin <encode|decode> <infile> <outfile>");
-        String code = "decode";//args[0];
-        String infile = "huffman-example.grin";//args[1]; C:\Users\lacke\Desktop\github\grin-compression\files\huffman-example.grin
-        String outfile = "huffman-example.txt";//args[2];
+        String code = "decode"; //args[0];
+        String infile = "huffman-example.grin"; //args[1]; C:\Users\lacke\Desktop\github\grin-compression\files\huffman-example.grin
+        String outfile = "huffman-example.txt"; //args[2];
         if (code.equals("encode")) {
             encode(infile, outfile);
         } else if (code.equals("decode")) {
