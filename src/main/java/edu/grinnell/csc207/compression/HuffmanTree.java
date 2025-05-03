@@ -18,6 +18,14 @@ import java.util.PriorityQueue;
 public class HuffmanTree {
     private static Node root;
 
+    public static Node getRoot() {
+        return root;
+    }
+
+    /**
+     * 
+     * @param freqs
+     */
     public HuffmanTree(Map<Short, Integer> freqs) {
         PriorityQueue<Node> queue = new PriorityQueue<>();
         for (Map.Entry<Short, Integer> entry : freqs.entrySet()) {
@@ -32,12 +40,12 @@ public class HuffmanTree {
         Node root = queue.poll();
     }
 
-
     /**
      * Constructs a new HuffmanTree from the given file.
+     * 
      * @param in the input file (as a BitInputStream)
      */
-    public HuffmanTree (BitInputStream in) {
+    public HuffmanTree(BitInputStream in) {
         root = huffmanTreeHelper(in);
     }
 
@@ -45,7 +53,7 @@ public class HuffmanTree {
         int bit = in.readBit();
         if (bit == 0) {
             short value = (short) in.readBits(9);
-            return new Node(value, 0); // frequency is not needed for leaves
+            return new Node(value, 0);
         } else {
             Node left = huffmanTreeHelper(in);
             Node right = huffmanTreeHelper(in);
@@ -53,6 +61,24 @@ public class HuffmanTree {
         }
     }
 
+    /**
+     * 
+     * @param in   the bitstream file to decode
+     * @param root the root of the tree
+     * @return
+     */
+    public void decodeHelper(BitInputStream in, Node current) {
+        int bit = in.readBit();
+        short value;
+        if (bit == 0) {
+            value = (short) in.readBits(9);
+            current = new Node(value, 1);
+        } else {
+            current = new Node((short) -1, 0);
+            decodeHelper(in, current.left);
+            decodeHelper(in, current.right);
+        }
+    }
 
     /**
      * Writes this HuffmanTree to the given file as a stream of bits in a
@@ -93,7 +119,7 @@ public class HuffmanTree {
         while (true) {
             int value = in.readBits(9);
             if (value == 256) {
-                break; 
+                break;
             }
             Node current = root;
             while (!current.isLeaf()) {
@@ -106,8 +132,7 @@ public class HuffmanTree {
                 }
             }
         }
-        out.writeBit(0); // write EOF character
-        out.close();
+        out.writeBit(0); 
     }
 
     /**
@@ -120,7 +145,8 @@ public class HuffmanTree {
      * @param out the file to write the decompressed output to.
      */
     public void decode(BitInputStream in, BitOutputStream out) {
-        while (true) {
+        boolean isNotEof = true;
+        while (isNotEof) {
             Node current = root;
             while (!current.isLeaf()) {
                 int bit = in.readBit();
@@ -131,10 +157,10 @@ public class HuffmanTree {
                 }
             }
             if (current.value == 256) {
-                break; 
+                isNotEof = false;
+            } else {
+                out.writeBits(current.value, 8);
             }
-            out.writeBits(current.value, 9);
         }
-        out.close();
     }
 }
