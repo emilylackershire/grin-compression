@@ -1,5 +1,8 @@
 package edu.grinnell.csc207.compression;
 
+/**
+ * Node class for Huffman Tree
+ */
 public class Node {
     short value; // the value of this node
     int frequency; // the frequency of this node
@@ -32,7 +35,7 @@ public class Node {
     /**
      * Checks if is leaf
      * 
-     * @return
+     * @return true or false
      */
     boolean isLeaf() {
         return left == null && right == null;
