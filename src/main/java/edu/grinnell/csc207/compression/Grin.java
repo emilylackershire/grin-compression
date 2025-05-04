@@ -40,7 +40,7 @@ public class Grin {
         Map<Short, Integer> freqMap = new java.util.HashMap<>();
         boolean map = true;
         while (map) {
-            short value = (short) in.readBits(8);
+            short value = (short) in.readBits(9);
             if (value == -1) {
                 map = false;
             }
